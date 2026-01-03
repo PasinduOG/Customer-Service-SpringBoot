@@ -25,7 +25,7 @@ public class CustomerDto {
     @Email(message = "Invalid email address")
     private String email;
 
-    @NotNull(message = "Salary cannot be empty")
+    @NotNull(message = "Salary is required")
     @Positive(message = "Salary must be positive")
     private Double salary;
 }

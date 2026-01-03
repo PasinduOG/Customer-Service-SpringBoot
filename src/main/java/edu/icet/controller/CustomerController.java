@@ -40,7 +40,7 @@ public class CustomerController {
         Map<String, String> map = new HashMap<>();
         Customer customer = modelMapper.map(customerDto, Customer.class);
         service.saveCustomer(customer);
-        map.put(STATUS, "User Created Successfully");
+        map.put(STATUS, "Customer Created Successfully");
         return ResponseEntity.status(HttpStatus.CREATED).body(map);
     }
 
@@ -68,8 +68,8 @@ public class CustomerController {
             map.put(STATUS, "Please Enter Customer ID or Invalid Customer ID");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         }
-        Boolean isDeleted = service.delete(id);
-        if (isDeleted == null || !isDeleted) {
+        boolean isDeleted = service.delete(id);
+        if (!isDeleted) {
             map.put(STATUS, "Customer not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
         }

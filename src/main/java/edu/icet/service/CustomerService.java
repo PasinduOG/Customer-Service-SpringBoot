@@ -24,7 +24,7 @@ public class CustomerService {
         return repository.findAll();
     }
 
-    public Boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         if (!repository.existsById(id)) {
             return false;
         }
