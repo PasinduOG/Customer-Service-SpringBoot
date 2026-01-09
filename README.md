@@ -1,6 +1,57 @@
 # Customer Service API
 
-A RESTful web service built with Spring Boot for managing customer data. This application provides complete CRUD operations for customer management with comprehensive validation and exception handling.
+![Java](https://img.shields.io/badge/Java-17-blue)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.1-green)
+![MySQL](https://img.shields.io/badge/MySQL-9.1.0-orange)
+![Status](https://img.shields.io/badge/Status-Active-success)
+
+A RESTful web service built with Spring Boot for managing customerEntity data. This application provides complete CRUD operations for customerEntity management with comprehensive validation and exception handling.
+
+## 📅 Recent Updates
+
+### January 9, 2026 - Latest Updates 🎉
+- ✅ **Swagger/OpenAPI Integration** - Added interactive API documentation at `/swagger-ui.html`
+- ✅ **ModelMapper Configuration** - Created dedicated `ModelMapperConfig` class with `@Bean` definition
+- ✅ **Composition Pattern** - Refactored `CustomerMapper` to use composition instead of inheritance
+- ✅ **Entity Renamed** - Changed from `Customer` to `CustomerEntity` for better clarity
+- ✅ **Table Mapping** - Explicitly mapped entity to `customer` table with `@Table(name = "customer")`
+- ✅ **Controller Enhancement** - Added `@Tag` annotation for Swagger documentation
+- ✅ **Method Reference** - Updated streams to use `customerMapper::toCustomerDto` for cleaner code
+
+### Key Improvements in Current Version
+- **Swagger UI**: Interactive API documentation and testing interface
+- **Service Layer Pattern**: Interface-based design with `CustomerService` interface and `CustomerServiceImpl` implementation
+- **Composition over Inheritance**: `CustomerMapper` now uses ModelMapper via dependency injection
+- **Enhanced Validation**: Comprehensive input validation with clear, user-friendly error messages
+- **Robust Delete Operation**: Two-tier validation (ID format + existence check) with appropriate HTTP status codes
+- **Production-Ready Error Handling**: Global exception handler for consistent error responses
+- **Clear Entity Naming**: `CustomerEntity` distinguishes database models from DTOs
+
+## 🚀 Quick Start
+
+Get the application running in 4 simple steps:
+
+1. **Configure Database**: Update `.env` file with your MySQL credentials
+   ```properties
+   DB_URL=jdbc:mysql://localhost:3306/customer_sv_db?createDatabaseIfNotExist=true
+   DB_USERNAME=your_mysql_username
+   DB_PASSWORD=your_mysql_password
+   ```
+
+2. **Run the Application**:
+   ```powershell
+   mvn spring-boot:run
+   ```
+
+3. **Access Swagger UI** (Interactive API Documentation):
+   Open your browser: `http://localhost:8080/swagger-ui.html`
+   
+4. **Test the API**:
+   ```powershell
+   curl http://localhost:8080/customer/get-all
+   ```
+
+That's it! The application will automatically create the database and tables. 🎉
 
 ## 📋 Table of Contents
 
@@ -19,16 +70,22 @@ A RESTful web service built with Spring Boot for managing customer data. This ap
 
 ## ✨ Features
 
-- **Create** new customers with validation
-- **Read** all customers
-- **Update** existing customer information
-- **Delete** customers by ID with proper error handling
-- Comprehensive input validation with detailed error messages
-- Global exception handling for all endpoints
-- Environment variable-based configuration for security
-- ModelMapper for clean DTO-Entity conversion
-- MySQL database integration with JPA/Hibernate
-- Automatic database and table creation
+### Core CRUD Operations
+- ✅ **Create** new customers with validation
+- ✅ **Read** all customers
+- ✅ **Update** existing customerEntity information
+- ✅ **Delete** customers by ID with proper error handling
+
+### Advanced Features
+- ✅ Comprehensive input validation with detailed error messages
+- ✅ Global exception handling for all endpoints
+- ✅ Environment variable-based configuration for security
+- ✅ Custom ModelMapper component for clean DTO-Entity conversion
+- ✅ MySQL database integration with JPA/Hibernate
+- ✅ Automatic database and table creation
+- ✅ Interface-based service layer architecture
+- ✅ RESTful API design with proper HTTP status codes
+- ✅ JSON property ordering for consistent response format
 
 ## 🛠 Technologies Used
 
@@ -40,41 +97,57 @@ A RESTful web service built with Spring Boot for managing customer data. This ap
 - **MySQL Connector 9.1.0** - Database connectivity
 - **Lombok 1.18.42** - Reduces boilerplate code (getters, setters, constructors)
 - **ModelMapper 3.1.1** - Object mapping between DTOs and entities
+- **SpringDoc OpenAPI 3.0.1** - API documentation with Swagger UI
 - **Maven** - Build and dependency management
 - **Spring Dotenv 5.1.0** - Environment variable management
 
 ## 📁 Project Structure
 
 ```
-customer-sv/
+customerEntity-sv/
 ├── src/
 │   ├── main/
 │   │   ├── java/edu/icet/
 │   │   │   ├── CustomerSvApplication.java           # Main application entry point
-│   │   │   │                                        # Configures ModelMapper bean
+│   │   │   │                                        # Spring Boot application starter
+│   │   │   │
+│   │   │   ├── config/
+│   │   │   │   ├── ModelMapperConfig.java           # ModelMapper Bean configuration
+│   │   │   │   │                                    # Provides ModelMapper instance
+│   │   │   │   └── OpenApiConfig.java               # Swagger/OpenAPI configuration
+│   │   │   │                                        # API documentation settings
 │   │   │   │
 │   │   │   ├── controller/
 │   │   │   │   └── CustomerController.java          # REST API endpoints
 │   │   │   │                                        # Handles HTTP requests/responses
+│   │   │   │                                        # Includes @Tag for Swagger docs
 │   │   │   │
 │   │   │   ├── dto/
 │   │   │   │   └── CustomerDto.java                 # Data Transfer Object
 │   │   │   │                                        # Includes validation annotations
 │   │   │   │
 │   │   │   ├── entity/
-│   │   │   │   └── Customer.java                    # JPA Entity (Database model)
+│   │   │   │   └── CustomerEntity.java              # JPA Entity (Database model)
+│   │   │   │                                        # Mapped to 'customer' table
 │   │   │   │
 │   │   │   ├── exception/
 │   │   │   │   └── GlobalExceptionHandler.java     # Global error handling
 │   │   │   │                                        # Handles validation & runtime errors
+│   │   │   │
+│   │   │   ├── mapper/
+│   │   │   │   └── CustomerMapper.java              # DTO-Entity mapping component
+│   │   │   │                                        # Uses composition with ModelMapper
 │   │   │   │
 │   │   │   ├── repository/
 │   │   │   │   └── CustomerRepository.java          # JPA Repository interface
 │   │   │   │                                        # Extends JpaRepository
 │   │   │   │
 │   │   │   └── service/
-│   │   │       └── CustomerService.java             # Business logic layer
-│   │   │                                            # Manages customer operations
+│   │   │       ├── CustomerService.java             # Service interface
+│   │   │       │                                    # Defines business logic contracts
+│   │   │       └── impl/
+│   │   │           └── CustomerServiceImpl.java     # Service implementation
+│   │   │                                            # Manages customerEntity operations
 │   │   │
 │   │   └── resources/
 │   │       └── application.yml                      # Application configuration
@@ -90,12 +163,14 @@ customer-sv/
 
 ### Architecture Layers
 
-1. **Controller Layer** (`CustomerController.java`): Handles HTTP requests and responses, validates path variables
-2. **Service Layer** (`CustomerService.java`): Contains business logic, orchestrates data operations
-3. **Repository Layer** (`CustomerRepository.java`): Manages database operations using Spring Data JPA
-4. **DTO Layer** (`CustomerDto.java`): Data transfer objects with validation annotations for API communication
-5. **Entity Layer** (`Customer.java`): JPA entities representing database table structure
-6. **Exception Layer** (`GlobalExceptionHandler.java`): Centralized exception handling across the application
+1. **Config Layer** (`ModelMapperConfig.java`, `OpenApiConfig.java`): Application configuration and bean definitions
+2. **Controller Layer** (`CustomerController.java`): Handles HTTP requests and responses, validates path variables
+3. **Service Layer** (`CustomerService.java` & `CustomerServiceImpl.java`): Contains business logic, orchestrates data operations
+4. **Repository Layer** (`CustomerRepository.java`): Manages database operations using Spring Data JPA
+5. **DTO Layer** (`CustomerDto.java`): Data transfer objects with validation annotations for API communication
+6. **Entity Layer** (`CustomerEntity.java`): JPA entities representing database table structure, mapped to 'customer' table
+7. **Mapper Layer** (`CustomerMapper.java`): DTO-Entity conversion using composition pattern with ModelMapper
+8. **Exception Layer** (`GlobalExceptionHandler.java`): Centralized exception handling across the application
 
 ## 📋 Prerequisites
 
@@ -111,7 +186,7 @@ Before running this application, ensure you have the following installed:
 
 1. **Navigate to the project directory**:
    ```powershell
-   cd "C:\icd119\Enterprise Applications Support Sessions\customer-sv"
+   cd "C:\ICD119 Weekdays\Enterprise Application Development\Practicals\Customer-Service-SpringBoot"
    ```
 
 2. **Install MySQL** (if not already installed). The database will be created automatically if it doesn't exist (thanks to `createDatabaseIfNotExist=true` parameter in the connection URL).
@@ -171,6 +246,45 @@ spring:
 - **`validate`**: Validates schema against entities without making changes
 - **`none`**: No schema management
 
+### ModelMapper Configuration
+
+The application uses **composition pattern** for ModelMapper integration:
+
+**1. Bean Configuration (`ModelMapperConfig.java`):**
+```java
+@Configuration
+public class ModelMapperConfig {
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
+}
+```
+
+**2. Mapper Component (`CustomerMapper.java`):**
+```java
+@Component
+@AllArgsConstructor
+public class CustomerMapper {
+    private final ModelMapper modelMapper;
+
+    public CustomerEntity toEntity(CustomerDto customerDto){
+        return modelMapper.map(customerDto, CustomerEntity.class);
+    }
+
+    public CustomerDto toCustomerDto(CustomerEntity customerEntity){
+        return modelMapper.map(customerEntity, CustomerDto.class);
+    }
+}
+```
+
+**Benefits of Composition Pattern:**
+- ✅ Better encapsulation and separation of concerns
+- ✅ Type-safe conversion methods
+- ✅ Easier to test and mock
+- ✅ Flexible for custom mapping logic
+- ✅ Follows Spring best practices
+
 ## ▶️ Running the Application
 
 ### Option 1: Using Maven (Recommended)
@@ -181,7 +295,7 @@ mvn spring-boot:run
 ### Option 2: Using JAR file
 ```powershell
 mvn clean package
-java -jar target\customer-sv-1.0-SNAPSHOT.jar
+java -jar target\customerEntity-sv-1.0-SNAPSHOT.jar
 ```
 
 ### Option 3: From IDE
@@ -197,6 +311,46 @@ curl http://localhost:8080/customer/get-all
 ```
 
 Or open in browser: `http://localhost:8080/customer/get-all`
+
+## 📚 Swagger UI - Interactive API Documentation
+
+Access the Swagger UI interface to explore and test all API endpoints interactively:
+
+**Swagger UI URL:** `http://localhost:8080/swagger-ui.html`
+
+### Features of Swagger UI:
+- ✅ **Interactive Testing**: Test all endpoints directly from the browser
+- ✅ **Request/Response Examples**: See sample requests and responses
+- ✅ **Schema Definitions**: View DTO and entity structures
+- ✅ **Validation Rules**: See all validation constraints
+- ✅ **Try It Out**: Execute API calls with custom parameters
+
+### Swagger Configuration
+
+The OpenAPI configuration is defined in `OpenApiConfig.java`:
+
+```java
+@Configuration
+public class OpenApiConfig {
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI().info(
+                new Info().title("Customer Service RESTful API")
+                        .description("A RESTful web service built with Spring Boot...")
+                        .version("1.0.0")
+        );
+    }
+}
+```
+
+Controller endpoints are tagged for better organization:
+
+```java
+@Tag(name = "Customer Controller", description = "To Manage Customers")
+public class CustomerController {
+    // ...endpoints
+}
+```
 
 ## 🌐 API Endpoints
 
@@ -348,7 +502,7 @@ The `CustomerDto` class enforces the following validation rules:
 | **name** | `@NotEmpty` | "Name cannot be empty!" |
 | **age** | `@NotNull`, `@Positive` | "Age cannot be empty" / "Age must be positive" |
 | **email** | `@NotEmpty`, `@Email` | "Email cannot be empty" / "Invalid email address" |
-| **salary** | `@NotNull`, `@Positive` | "Salary cannot be empty" / "Salary must be positive" |
+| **salary** | `@NotNull`, `@Positive` | "Salary is required" / "Salary must be positive" |
 
 **Example Validation Error Response:**
 ```json
@@ -405,7 +559,7 @@ The delete functionality demonstrates comprehensive error handling:
 ```java
 public boolean delete(Integer id) {
     if (!repository.existsById(id)) {
-        return false;  // Customer doesn't exist
+        return false;  // CustomerEntity doesn't exist
     }
     repository.deleteById(id);
     return true;  // Successfully deleted
@@ -420,14 +574,14 @@ ResponseEntity<Map<String, String>> deleteCustomer(@PathVariable("id") Integer i
     
     // Validation 1: Check if ID is valid (positive integer)
     if (id <= 0) {
-        map.put(STATUS, "Please Enter Customer ID or Invalid Customer ID");
+        map.put(STATUS, "Please Enter CustomerEntity ID or Invalid CustomerEntity ID");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
     
-    // Validation 2: Check if customer exists before deletion
+    // Validation 2: Check if customerEntity exists before deletion
     boolean isDeleted = service.delete(id);
     if (!isDeleted) {
-        map.put(STATUS, "Customer not found");
+        map.put(STATUS, "CustomerEntity not found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
     
@@ -455,9 +609,29 @@ ResponseEntity<Map<String, String>> deleteCustomer(@PathVariable("id") Integer i
 
 ## 💾 Database Schema
 
-The `Customer` table is automatically created by Hibernate with the following structure:
+The `customer` table is automatically created by Hibernate with the following structure:
 
-### Customer Table
+### CustomerEntity → customer Table Mapping
+
+The `CustomerEntity` class is explicitly mapped to the `customer` table using `@Table(name = "customer")`.
+
+**Entity Definition:**
+```java
+@Entity
+@Table(name = "customer")
+public class CustomerEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String type;
+    private String name;
+    private Integer age;
+    private String email;
+    private Double salary;
+}
+```
+
+### customer Table Schema
 
 | Column | Data Type | Constraints | Description |
 |--------|-----------|-------------|-------------|
@@ -480,7 +654,7 @@ CREATE TABLE customer (
 );
 ```
 
-**Note:** Hibernate automatically creates this table when the application starts (due to `ddl-auto: update` setting).
+**Note:** Hibernate automatically creates this table when the application starts (due to `ddl-auto: update` setting). The explicit `@Table` annotation ensures the entity maps to the `customer` table name.
 
 ## 🧪 Testing the API
 
@@ -534,10 +708,10 @@ This project is developed for educational purposes as part of the Enterprise App
 **Project Information:**
 - **Version**: 1.0-SNAPSHOT
 - **Group ID**: edu.icet
-- **Artifact ID**: customer-sv
+- **Artifact ID**: customerEntity-sv
 - **Java Version**: 17
 - **Spring Boot Version**: 4.0.1
-- **Last Updated**: January 3, 2026
+- **Last Updated**: January 9, 2026
 
 ---
 
@@ -546,13 +720,17 @@ This project is developed for educational purposes as part of the Enterprise App
 This project demonstrates:
 
 ✅ **RESTful API Design** with proper HTTP methods and status codes  
-✅ **Layered Architecture** (Controller → Service → Repository)  
+✅ **Swagger/OpenAPI Integration** for interactive API documentation  
+✅ **Layered Architecture** with 8 distinct layers (Config → Controller → Service → Repository)  
 ✅ **DTO Pattern** for separating API contracts from database models  
+✅ **Composition Pattern** for ModelMapper integration (not inheritance)  
 ✅ **Comprehensive Validation** using Jakarta Validation annotations  
 ✅ **Global Exception Handling** for consistent error responses  
 ✅ **Environment-based Configuration** for security  
+✅ **Explicit Table Mapping** with `@Table` annotation  
 ✅ **Spring Data JPA** for simplified database operations  
 ✅ **Clean Code Practices** with Lombok reducing boilerplate  
+✅ **Method References** for cleaner stream operations  
 
 Perfect for learning Spring Boot and building enterprise-grade applications! 🚀
 
